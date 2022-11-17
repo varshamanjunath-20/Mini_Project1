@@ -46,6 +46,7 @@ namespace Infinite_Casestudy1
             try
             {
                 Console.WriteLine("-------------------------------------");
+                Console.WriteLine("Heya!!!......");
                 Console.WriteLine("Enter your choice....");
                 Console.WriteLine("   ");
                 Console.WriteLine("1. To see all the student list ");
@@ -95,7 +96,7 @@ namespace Infinite_Casestudy1
         }
         public void showAdminScreen()
         {
-        StartFirstScreen:
+        StartAdminScreen:
             try
             {
                 Console.WriteLine("-----------------------------------");
@@ -118,31 +119,31 @@ namespace Infinite_Casestudy1
                 {
                     case 1:
                         showAllStudentsScreen();
-                        goto StartFirstScreen;
+                        goto StartAdminScreen;
                     case 2:
                         Enrollments();
                         break;
                     case 3:
                         Display_enroll();
-                        goto StartFirstScreen;
+                        goto StartAdminScreen;
                     case 4:
                         Delete_Enrollments();
-                        goto StartFirstScreen;
+                        goto StartAdminScreen; 
                     case 5:
                         introduceNewCourseScreen();
-                        goto StartFirstScreen;
+                        goto StartAdminScreen; 
                     case 6:
                         showAllCoursesScreen();
-                        goto StartFirstScreen;
+                        goto StartAdminScreen; 
                     case 7:
                         DeleteCourse();
-                        goto StartFirstScreen;
+                        goto StartAdminScreen; 
                     case 8:
                         UpdateStudent();
-                        goto StartFirstScreen;
+                        goto StartAdminScreen; 
                     case 9:
                         DeleteStudent();
-                        goto StartFirstScreen;
+                        goto StartAdminScreen; 
                     case 10:
                         showFirstScreen();
                         break;
@@ -156,7 +157,7 @@ namespace Infinite_Casestudy1
                         }
                         else
                         {
-                            goto StartFirstScreen;
+                            goto StartAdminScreen; 
                         }
                     default:
                         Console.WriteLine("Please enter the valid option", op);

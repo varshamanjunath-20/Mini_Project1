@@ -13,7 +13,6 @@ namespace Infinite_Casestudy1
         public static SqlConnection con;
         public static SqlCommand cmd;
         public static SqlDataReader dr;
-
         public static SqlConnection GetConnection()
         {
             con = new SqlConnection("data source=ICS-LAP-6624;initial catalog=MINI_PROJECT;" +
@@ -24,23 +23,28 @@ namespace Infinite_Casestudy1
         public static void register1()
         {
             con = GetConnection();
-            Console.WriteLine("Enter the student id, name, date of birth");
-            int Id = Convert.ToInt32(Console.ReadLine());
-            string name = Console.ReadLine();
-            DateTime DOB =Convert.ToDateTime (Console.ReadLine());
-            cmd = new SqlCommand("insert into Student values(@id,@name,@dob)", con);
-            cmd.Parameters.AddWithValue("@id", Id);
-            cmd.Parameters.AddWithValue("@name", name);
-            cmd.Parameters.AddWithValue("@dob", DOB);
-            int v = cmd.ExecuteNonQuery();
+            try
+            {
+                Console.WriteLine("Enter the student name, date of birth");
+                string name = Console.ReadLine();
+                DateTime DOB = Convert.ToDateTime(Console.ReadLine());
+                cmd = new SqlCommand("insert into Student values(@name,@dob)", con);
+                cmd.Parameters.AddWithValue("@name", name);
+                cmd.Parameters.AddWithValue("@dob", DOB);
+                int v = cmd.ExecuteNonQuery();
 
-            if (v > 0)
-            {
-                Console.WriteLine("Registered successfully....");
+                if (v > 0)
+                {
+                    Console.WriteLine("Registered successfully....");
+                }
+                else
+                {
+                    Console.WriteLine("something went wrong");
+                }
             }
-            else
+            catch(SystemException)
             {
-                Console.WriteLine("something went wrong");
+                Console.WriteLine("Error in the database...");
             }
         }
         public static void Selectdata()
@@ -56,26 +60,33 @@ namespace Infinite_Casestudy1
         public static void Introduce1()
         {
             con = GetConnection();
-            Console.WriteLine("Enter the course id, name, duration and fees : ");
-            int Course_id = Convert.ToInt32(Console.ReadLine());
-            string Course_name = Console.ReadLine();
-            float Duration = float.Parse(Console.ReadLine());
-            float Fees = float.Parse(Console.ReadLine());
-            cmd = new SqlCommand("insert into course values(@id,@name,@duration,@fees)", con);
-            cmd.Parameters.AddWithValue("@id", Course_id);
-            cmd.Parameters.AddWithValue("@name", Course_name);
-            cmd.Parameters.AddWithValue("@duration", Duration);
-            cmd.Parameters.AddWithValue("@fees", Fees);
-            int i = cmd.ExecuteNonQuery();
+            try
+            {
+                Console.WriteLine("Enter the course id, name, duration and fees : ");
+                int Course_id = Convert.ToInt32(Console.ReadLine());
+                string Course_name = Console.ReadLine();
+                float Duration = float.Parse(Console.ReadLine());
+                float Fees = float.Parse(Console.ReadLine());
+                cmd = new SqlCommand("insert into course values(@id,@name,@duration,@fees)", con);
+                cmd.Parameters.AddWithValue("@id", Course_id);
+                cmd.Parameters.AddWithValue("@name", Course_name);
+                cmd.Parameters.AddWithValue("@duration", Duration);
+                cmd.Parameters.AddWithValue("@fees", Fees);
+                int i = cmd.ExecuteNonQuery();
 
-            if (i > 0)
-            {
-                Console.WriteLine("Course Added successfully....");
-                Console.WriteLine("Completed.....");
+                if (i > 0)
+                {
+                    Console.WriteLine("Course Added successfully....");
+                    Console.WriteLine("Completed.....");
+                }
+                else
+                {
+                    Console.WriteLine("something went wrong");
+                }
             }
-            else
+            catch (SystemException)
             {
-                Console.WriteLine("something went wrong");
+                Console.WriteLine("Error in database..");
             }
         }
         public static void Select()
@@ -85,7 +96,10 @@ namespace Infinite_Casestudy1
             dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                Console.WriteLine(dr[0] + " " + dr[1] + " " + dr[2] + " " + dr[3]);
+                Console.WriteLine(dr[0]);
+                Console.WriteLine(dr[1]);
+                Console.WriteLine(dr[2] +" "+"months"); 
+                Console.WriteLine(dr[3]);
             }
         }
         public static void Update()
@@ -183,72 +197,52 @@ namespace Infinite_Casestudy1
                 Console.WriteLine("You Opted not to delete the Course");
             }
         }
-        public static void EnrollCall()
-        {
-            con = GetConnection();
-            cmd = new SqlCommand("ENROLL", con); //name of the procedure
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
-            {
-                Console.WriteLine("Student Id: " + dr[0]);
-                Console.WriteLine("Student Name :" + dr[1]);
-                Console.WriteLine("Date of birth :" + dr[2]);
-                Console.WriteLine("Course_id :" + dr[3]);
-                Console.WriteLine("Course_name :" + dr[4]);
-                Console.WriteLine("Duration :" + dr[5] +" "+ "Months");
-                Console.WriteLine("Fees :" + dr[6]);
-            }
-        }
         public static void Student_enroll()
         {
             con = GetConnection();
-            Console.WriteLine("Enter the student id, Name : ");
-            Console.WriteLine("Enter the course id, name, duration and fees : ");
-            int Id = Convert.ToInt32(Console.ReadLine());
-            string name = Console.ReadLine();
-            int Course_id = Convert.ToInt32(Console.ReadLine());
-            string Course_name = Console.ReadLine();
-            float Duration = float.Parse(Console.ReadLine());
-            float Fees = float.Parse(Console.ReadLine());
-            cmd = new SqlCommand("insert into student_enroll values(@id,@name,@cid,@cname,@duration,@fees)", con);
-            cmd.Parameters.AddWithValue("@id", Id);
-            cmd.Parameters.AddWithValue("@name", name);
-            cmd.Parameters.AddWithValue("@cid", Course_id);
-            cmd.Parameters.AddWithValue("@cname", Course_name);
-            cmd.Parameters.AddWithValue("@duration", Duration);
-            cmd.Parameters.AddWithValue("@fees", Fees);
-            int i = cmd.ExecuteNonQuery();
+            try
+            {
+                Console.WriteLine("You can only enroll the existing student and course details :");
+                Console.WriteLine("Enter the student id and course id : ");
+                int Id = Convert.ToInt32(Console.ReadLine());
+                int Course_id = Convert.ToInt32(Console.ReadLine());
+                cmd = new SqlCommand("insert into student_enroll values(@id,@cid)", con);
+                cmd.Parameters.AddWithValue("@id", Id);
+                cmd.Parameters.AddWithValue("@cid", Course_id);
+                int i = cmd.ExecuteNonQuery();
 
-            if (i > 0)
-            {
-                Console.WriteLine("Enrollment is successfull....");
-                Console.WriteLine("Thank You");
+                if (i > 0)
+                {
+                    Console.WriteLine("Enrollment is successfull....");
+                    Console.WriteLine("Thank You");
+                }
+                else
+                {
+                    Console.WriteLine("something went wrong");
+                }
             }
-            else
+            catch (SystemException)
             {
-                Console.WriteLine("something went wrong");
+                Console.WriteLine("Error in the database...");
             }
         }
         public static void Display_enroll()
         {
             con = GetConnection();
-            cmd = new SqlCommand("select * from Student_enroll", con);
+            cmd = new SqlCommand("SELECT E.EID, S.*,C.* FROM STUDENT_ENROLL E JOIN STUDENT S ON E.ID = S.ID JOIN COURSE C ON E.COURSE_ID =C.COURSE_ID", con);
             dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                Console.WriteLine(dr[0] + " " + dr[1] + " " + dr[2] + " " + dr[3]
-                    +" "+ dr[4] + " " + dr[5]);
+                Console.WriteLine(dr[0]+ " " + dr[1] + " " + dr[2] + " " +dr[3] + " " +dr[4] + " " + dr[5] + " " + dr[6] + " " + dr[7]);
             }
         }
         public static void DeleteEnroll()
         {
             con = GetConnection();
-            Console.WriteLine("Enter the Student Id:");
-            int Id = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter the Enroll Id:");
+            int EId = Convert.ToInt32(Console.ReadLine());
             SqlCommand cmd1 = new SqlCommand("Select * from student_enroll where Id=@id", con);
-            cmd1.Parameters.AddWithValue("@id", Id);
+            cmd1.Parameters.AddWithValue("@id", EId);
             SqlDataReader dr1 = cmd1.ExecuteReader();
             while (dr1.Read())
             {
@@ -263,7 +257,7 @@ namespace Infinite_Casestudy1
             if (status == "y" || status == "Y")
             {
                 cmd = new SqlCommand("delete from student_enroll where Id=@id", con);
-                cmd.Parameters.AddWithValue("@id", Id);
+                cmd.Parameters.AddWithValue("@id", EId);
                 con.Open();
                 int res = cmd.ExecuteNonQuery();
                 if (res > 0)
